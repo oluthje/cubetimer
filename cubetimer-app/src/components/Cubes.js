@@ -1,51 +1,48 @@
-import React from "react";
-import { List, Typography, Divider, Button } from 'antd';
+import React, { useState, useEffect } from "react";
+import { List, Divider, Button, Layout } from 'antd';
 import axios from 'axios'
+import NewCube from "../components/NewCube";
 
-//run 'heroku local -f Procfile.dev' in terminal to start app
+function Cubes(props) {
+  const [cubes, setCubes] = useState([]);
 
-class Cubes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cubes: []
-    };
-  }
+  useEffect(() => {
+    getCubes()
+  }, []);
 
-  getCubes() {
+  const getCubes = () => {
     axios.get('/api/v1/cubes')
     .then(response => {
-      this.setState({cubes: response.data});
-      console.log(response.data);
+      setCubes(response.data);
     })
     .catch(error => console.log(error))
   }
 
-  componentDidMount() {
-    this.getCubes()
-    console.log("cubes")
-    console.log(this.state.cubes)
+  const onCreateCube = (name) => {
+    axios.post('/api/v1/cubes', {cube: {name: name}})
+    .then(response => {
+      setCubes(cubes => [...cubes, response.data])
+    })
+    .catch(error => console.log(error))
   }
 
-  render() {
-    return (
-      <>
+  return (
+    <>
+      <Layout>
         <Divider orientation="left">Cubes</Divider>
         <List
           bordered
-          itemLayout="horizontal"
-          dataSource={this.state.cubes}
+          dataSource={cubes}
           renderItem={cube => (
             <List.Item>
-              <List.Item.Meta
-                //title={<link to={`/cube/${cube.id}`}>{cube.name}</link>}
-                title={<Button href={`/cube/${cube.id}`} type="link">{cube.name}</Button>}
-              />
+              <Button key={cube.id} href={`/cube/${cube.id}`} type="primary">{cube.name}</Button>
             </List.Item>
           )}
         />
-      </>
-    );
-  }
+        <NewCube createCube={onCreateCube}/>
+      </Layout>
+    </>
+  );
 }
+
 export default Cubes;
