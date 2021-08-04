@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { List, Divider, Button, Layout } from 'antd';
+import { List, Divider, Button } from 'antd';
 import axios from 'axios'
 import NewCube from "../components/NewCube";
 
@@ -28,19 +28,17 @@ function Cubes(props) {
 
   return (
     <>
-      <Layout>
-        <Divider orientation="left">Cubes</Divider>
-        <List
-          bordered
-          dataSource={cubes}
-          renderItem={cube => (
-            <List.Item>
-              <Button key={cube.id} href={`/cube/${cube.id}`} type="primary">{cube.name}</Button>
-            </List.Item>
-          )}
-        />
-        <NewCube createCube={onCreateCube}/>
-      </Layout>
+      <Divider orientation="left">Cubes</Divider>
+      <List
+        bordered
+        dataSource={cubes}
+        renderItem={cube => (
+          <List.Item>
+            <Button key={cube.id} href={`/cube/${cube.id}`} type="primary">{cube.name}</Button>
+          </List.Item>
+        )}
+      />
+      <NewCube createCube={onCreateCube}/>
     </>
   );
 }
