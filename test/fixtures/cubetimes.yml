@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  seconds: 1.5
+  cube: one
+
+two:
+  seconds: 1.5
+  cube: two

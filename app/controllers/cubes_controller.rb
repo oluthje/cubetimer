@@ -11,7 +11,7 @@ class CubesController < ApplicationController
 
   def show
     cube = Cube.find(params[:id])
-    render json: cube
+    render json: cube.cubetimes
   end
 
   def update

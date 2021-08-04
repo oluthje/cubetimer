@@ -28,17 +28,19 @@ function Cubes(props) {
 
   return (
     <>
-      <Divider orientation="left">Cubes</Divider>
-      <List
-        bordered
-        dataSource={cubes}
-        renderItem={cube => (
-          <List.Item>
-            <Button key={cube.id} href={`/cube/${cube.id}`} type="primary">{cube.name}</Button>
-          </List.Item>
-        )}
-      />
-      <NewCube createCube={onCreateCube}/>
+      <Layout>
+        <Divider orientation="left">Cubes</Divider>
+        <List
+          bordered
+          dataSource={cubes}
+          renderItem={cube => (
+            <List.Item>
+              <Button key={cube.id} href={`/cubes/${cube.id}`} type="primary">{cube.name}</Button>
+            </List.Item>
+          )}
+        />
+        <NewCube createCube={onCreateCube}/>
+      </Layout>
     </>
   );
 }

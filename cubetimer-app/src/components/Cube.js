@@ -1,61 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from 'antd';
+import axios from 'axios'
 
-class Cube extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      times: []
-    };
-  }
+function Cube(props) {
+  const [times, setTimes] = useState([])
   
-  componentDidMount() {
-    const {
-      match: {
-        params: { id }
-      }
-    } = this.props;
-    
-    const url = `/api/v1/show/${id}`;
-    fetch(url)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then(response => this.setState({ times: response }))
-      .catch(() => this.props.history.push("/"));
+  var url = props.match.url.split("/")
+  const id = url[url.length - 1]
 
-    console.log(this.state.times)
+  useEffect(() => {
+    getCube()
+  }, [])
+
+  const getCube = () => {
+    axios.get(`/api/v1/cubes/${id}`)
+    .then(response => {
+      setTimes(response.data);
+    })
+    .catch(error => console.log(error))
   }
 
-  render() {
-    const { Column } = Table;
-    const { times } = this.state;
-    const data = [];
+  const { Column } = Table;
+  const data = [];
 
-    for (let i = 0; i < times.length; i++) {
-      const dict = {
-        key: i + 1,
-        id: times[i].id,
-        seconds: times[i].seconds
-      }
-      data.push(dict);
+  for (let i = 0; i < times.length; i++) {
+    const dict = {
+      key: i + 1,
+      id: times[i].id,
+      seconds: times[i].seconds
     }
+    data.push(dict)
+  }
 
-    let table = (
+  return (
+    <>
       <Table dataSource={data}>
         <Column title="#" dataIndex="key" key="key" />
         <Column title="Seconds" dataIndex="seconds" key="seconds" />
       </Table>
-    );
-
-    return (
-      <>
-        {table}
-      </>
-    );
-  }
+    </>
+  );
 }
+
 export default Cube;
