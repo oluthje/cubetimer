@@ -35,7 +35,7 @@ function Cubes(props) {
           dataSource={cubes}
           renderItem={cube => (
             <List.Item>
-              <Button key={cube.id} href={`/cube/${cube.id}`} type="primary">{cube.name}</Button>
+              <Button key={cube.id} href={`/cubes/${cube.id}`} type="primary">{cube.name}</Button>
             </List.Item>
           )}
         />
