@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Table } from 'antd';
 import axios from 'axios'
 
-function Cube(props) {
+function Session(props) {
   const [times, setTimes] = useState([])
   
   var url = props.match.url.split("/")
   const id = url[url.length - 1]
 
   useEffect(() => {
-    getCube()
+    getSession()
   }, [])
 
-  const getCube = () => {
-    axios.get(`/api/v1/cubes/${id}`)
+  const getSession = () => {
+    axios.get(`/api/v1/sessions/${id}`)
     .then(response => {
       setTimes(response.data);
     })
@@ -42,4 +42,4 @@ function Cube(props) {
   );
 }
 
-export default Cube;
+export default Session;

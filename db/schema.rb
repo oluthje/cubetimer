@@ -10,13 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_03_232538) do
-
-  create_table "cubes", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
+ActiveRecord::Schema.define(version: 2021_08_04_202425) do
 
   create_table "cubetimes", force: :cascade do |t|
     t.float "seconds"
@@ -26,5 +20,11 @@ ActiveRecord::Schema.define(version: 2021_08_03_232538) do
     t.index ["cube_id"], name: "index_cubetimes_on_cube_id"
   end
 
-  add_foreign_key "cubetimes", "cubes"
+  create_table "sessions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "cubetimes", "sessions", column: "cube_id"
 end
