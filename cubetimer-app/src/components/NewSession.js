@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Form, Input } from 'antd';
 import axios from 'axios'
 
-const NewCube = (props) => {
+const NewSession = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
 
@@ -18,11 +18,11 @@ const NewCube = (props) => {
   	const name = form.getFieldValue('name');
   	if (name) {
 	  	setIsModalVisible(false);
-	    props.createCube(form.getFieldValue('name'));
+	    props.createSession(form.getFieldValue('name'));
   	}
   };
 
-  const newCubeForm = (
+  const newSessionForm = (
     <Form
     	form={form}
       name="basic"
@@ -34,7 +34,7 @@ const NewCube = (props) => {
       <Form.Item
         label="Name"
         name="name"
-        rules={[{ required: true, message: 'Please name your cube!' }]}
+        rules={[{ required: true, message: 'Please name your session!' }]}
       >
         <Input />
       </Form.Item>
@@ -44,13 +44,13 @@ const NewCube = (props) => {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        New Cube
+        New Session
       </Button>
-      <Modal title="New Cube" visible={isModalVisible} onOk={onFinish} onCancel={handleCancel}>
-      	{newCubeForm}
+      <Modal title="New Session" visible={isModalVisible} onOk={onFinish} onCancel={handleCancel}>
+      	{newSessionForm}
       </Modal>
     </>
   );
 };
 
-export default NewCube;
+export default NewSession;

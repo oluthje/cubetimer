@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from 'antd';
 import AppMenu from "../components/AppMenu";
-import Cubes from "../components/Cubes";
-import Cube from "../components/Cube";
+import Sessions from "../components/Sessions";
+import Session from "../components/Session";
 
 const { Content } = Layout;
 
@@ -20,8 +20,8 @@ export default (
           }}
         >
           <Switch>
-            <Route path="/cubes" exact component={Cubes} />
-            <Route path="/cubes/:id" exact component={Cube} />
+            <Route path="/sessions" exact component={Sessions} />
+            <Route path="/sessions/:id" exact component={Session} />
           </Switch>
         </Content>
       </Layout>

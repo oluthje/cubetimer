@@ -1,7 +1,7 @@
 class CubetimesController < ApplicationController
 	def create
-	  cube = Cube.find(params[:cube_id])
-	  cubetime = cube.cubetimes.create(cubetime_params)
+	  session = Session.find(params[:session_id])
+	  cubetime = session.cubetimes.create(cubetime_params)
 	  render json: cubetime
 	end
 

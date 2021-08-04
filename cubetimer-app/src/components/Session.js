@@ -3,18 +3,18 @@ import { Table } from 'antd';
 import Timer from "../components/Timer";
 import axios from 'axios'
 
-function Cube(props) {
+function Session(props) {
   const [times, setTimes] = useState([])
   const { Column } = Table;
   var url = props.match.url.split("/")
   const id = url[url.length - 1]
 
   useEffect(() => {
-    getCube()
-  })
+    getSession()
+  }, [])
 
-  const getCube = () => {
-    axios.get(`/api/v1/cubes/${id}`)
+  const getSession = () => {
+    axios.get(`/api/v1/sessions/${id}`)
     .then(response => {
       setTimes(response.data);
     })
@@ -22,7 +22,7 @@ function Cube(props) {
   }
 
   const addCubetime = (seconds) => {
-    axios.post(`/api/v1/cubes/${id}/cubetimes`, {cubetime: {seconds: seconds}})
+    axios.post(`/api/v1/sessions/${id}/cubetimes`, {cubetime: {seconds: seconds}})
     .then(response => {
       setTimes(times => [...times, response.data])
     })
@@ -52,4 +52,4 @@ function Cube(props) {
   );
 }
 
-export default Cube;
+export default Session;

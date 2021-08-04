@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_03_232538) do
+ActiveRecord::Schema.define(version: 2021_08_04_211559) do
 
-  create_table "cubes", force: :cascade do |t|
+  create_table "cubetimes", force: :cascade do |t|
+    t.float "seconds"
+    t.integer "session_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["session_id"], name: "index_cubetimes_on_session_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "cubetimes", force: :cascade do |t|
-    t.float "seconds"
-    t.integer "cube_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["cube_id"], name: "index_cubetimes_on_cube_id"
-  end
-
-  add_foreign_key "cubetimes", "cubes"
+  add_foreign_key "cubetimes", "sessions"
 end

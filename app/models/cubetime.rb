@@ -1,3 +1,3 @@
 class Cubetime < ApplicationRecord
-  belongs_to :cube
+  belongs_to :session
 end
