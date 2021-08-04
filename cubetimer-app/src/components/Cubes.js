@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { List, Divider, Button } from 'antd';
+import { List, Divider, Button, Layout } from 'antd';
 import axios from 'axios'
 import NewCube from "../components/NewCube";
 
