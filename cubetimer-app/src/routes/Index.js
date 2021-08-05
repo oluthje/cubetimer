@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from 'antd';
 import AppMenu from "../components/AppMenu";
@@ -7,11 +7,18 @@ import Session from "../components/Session";
 
 const { Content } = Layout;
 
-export default (
-  <Router>
-    <Layout style={{ height:"100vh" }}>
-      <Layout>
-        <AppMenu/>
+const Routes = () => {
+  const [menuKey, setMenuKey] = useState("1")
+
+  const onSetMenuKey = (key) => {
+    console.log("set key to " + key + " old key is " + menuKey)
+    setMenuKey(key)
+  }
+
+  return (
+    <>
+      <Layout style={{ height:"100vh" }}>
+        <AppMenu setMenuKey={onSetMenuKey} menuKey={menuKey}/>
         <Content
           className="site-layout-background"
           style={{
@@ -19,12 +26,16 @@ export default (
             margin: 0,
           }}
         >
-          <Switch>
-            <Route path="/sessions" exact component={Sessions} />
-            <Route path="/sessions/:id" exact component={Session} />
-          </Switch>
+          <Router>
+            <Switch>
+              <Route path="/sessions" exact component={Sessions} />
+              <Route path="/sessions/:id" exact component={Session} />
+            </Switch>
+          </Router>
         </Content>
       </Layout>
-    </Layout>
-  </Router>
-);
+    </>
+  );
+}
+
+export default Routes;
