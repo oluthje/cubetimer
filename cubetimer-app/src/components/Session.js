@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Dropdown, Menu, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
 import Timer from "../components/Timer";
 import TimesTable from "../components/TimesTable";
+import SessionsDropdown from "../components/SessionsDropdown";
 import axios from 'axios'
 
 function Session(props) {
@@ -9,35 +10,17 @@ function Session(props) {
   const [session, setSession] = useState()
   const [times, setTimes] = useState([])
 
-  const sessionMenuItems = []
-  for (var key in sessions) {
-    const name = sessions[key].name
-    var disabled = false
-    session ? disabled = (session.name === name) : disabled = false
-    sessionMenuItems.push(
-      <Menu.Item key={key} disabled={disabled}>
-        <a target="_blank" rel="noopener noreferrer">
-          {name}
-        </a>
-      </Menu.Item>
-    )
-  }
-
-  const handleSessionClick = e => {
-    setSession(sessions[e.key])
-  }
-
-  const sessionMenu = (
-    <Menu onClick={handleSessionClick}>{sessionMenuItems}</Menu>
-  )
-
   useEffect(() => {
     getSessions()
   }, [])
 
   useEffect(() => {
     getSessionTimes()
-  }, [session])
+  })
+
+  const handleDropdownClick = e => {
+    setSession(sessions[e.key])
+  }
 
   const getSessions = () => {
     axios.get('/api/v1/sessions')
@@ -78,9 +61,7 @@ function Session(props) {
       <Row>
         <Timer addCubetime={addCubetime}/>
         <Col offset={20} span={2}>
-          <Dropdown overlay={sessionMenu} placement="bottomCenter" size={"large"}>
-            <Button style={{ width: '100px'}}>{session ? session.name : "Session"}</Button>
-          </Dropdown>
+          <SessionsDropdown session={session} sessions={sessions} onDropdownClick={handleDropdownClick}/>
         </Col>
       </Row>
       <br/>
