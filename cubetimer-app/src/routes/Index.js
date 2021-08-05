@@ -28,8 +28,8 @@ const Routes = () => {
         >
           <Router>
             <Switch>
+              <Route path="/timer/" exact component={Session} />
               <Route path="/sessions" exact component={Sessions} />
-              <Route path="/sessions/:id" exact component={Session} />
             </Switch>
           </Router>
         </Content>
