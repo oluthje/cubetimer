@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Dropdown, Menu, Row, Col } from 'antd';
+import { Button, Dropdown, Menu, Row, Col } from 'antd';
 import Timer from "../components/Timer";
+import TimesTable from "../components/TimesTable";
 import axios from 'axios'
 
 function Session(props) {
-  const [times, setTimes] = useState([])
   const [sessions, setSessions] = useState()
   const [session, setSession] = useState()
-
-  const { Column } = Table;
+  const [times, setTimes] = useState([])
 
   const sessionMenuItems = []
   for (var key in sessions) {
@@ -74,17 +73,6 @@ function Session(props) {
     .catch(error => console.log(error))
   }
 
-  const data = [];
-
-  for (let i = 0; i < times.length; i++) {
-    const dict = {
-      key: i + 1,
-      id: times[i].id,
-      seconds: times[i].seconds
-    }
-    data.push(dict)
-  }
-
   return (
     <>
       <Row>
@@ -96,12 +84,13 @@ function Session(props) {
         </Col>
       </Row>
       <br/>
-      <Table dataSource={data}>
-        <Column title="#" dataIndex="key" key="key" />
-        <Column title="Seconds" dataIndex="seconds" key="seconds" />
-      </Table>
+      <Row>
+        <Col offset={1} span={22}>
+          <TimesTable times={times}/>
+        </Col>
+      </Row>
     </>
-  );
+  )
 }
 
-export default Session;
+export default Session
