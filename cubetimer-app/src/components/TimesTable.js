@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from 'antd';
+import { formatCubeTime } from "../helper/functions.js";
 
 function TimesTable(props) {
 	const { Column } = Table;
@@ -10,7 +11,7 @@ function TimesTable(props) {
     const dict = {
       key: i + 1,
       id: times[i].id,
-      seconds: times[i].seconds
+      time: formatCubeTime(times[i].seconds).replace(/\s+/g, '')
     }
     data.push(dict)
   }
@@ -19,7 +20,7 @@ function TimesTable(props) {
 		<>
       <Table dataSource={data}>
         <Column title="#" dataIndex="key" key="key" />
-        <Column title="Seconds" dataIndex="seconds" key="seconds" />
+        <Column title="Time" dataIndex="time" key="time" />
       </Table>
      </>
 	)

@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Typography, Col, Button } from 'antd';
+import React, { useState } from "react";
+import { Typography, Button } from 'antd';
 import Timer from 'react-compound-timer'
 import { formatCubeTime } from "../helper/functions.js";
 
@@ -12,12 +12,9 @@ function TimeInput(props) {
   return (
     <>
       <Timer
-        //initialTime={55000}
+        initialTime={0}
         startImmediately={false}
         timeToUpdate={10}
-        onStop={value => {
-          console.log(value);
-        }}
       >
         {({ start, stop, reset, getTime }) => (
           <>
