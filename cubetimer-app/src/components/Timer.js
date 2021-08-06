@@ -1,21 +1,46 @@
-import React from "react";
-import { Input, Col } from 'antd';
+import React, { useState, useRef, useEffect } from "react";
+import { Typography, Col, Button } from 'antd';
+import Timer from 'react-compound-timer'
+import { formatCubeTime } from "../helper/functions.js";
 
-function Timer(props) {
-  const input_id = "timer-input"
+const { Title } = Typography
 
-  const onEnter = () => {
-    var element = document.getElementById(input_id);
-    props.addCubetime(element.value)
-  }
+function TimeInput(props) {
+  const [buttonName, setButtonName] = useState("Start")
+  const [running, setRunning] = useState(false)
 
   return (
     <>
-      <Col offset={9} span={8}>
-        <Input id={input_id} size="large" placeholder="seconds" onPressEnter={onEnter} />
-      </Col>
+      <Timer
+        //initialTime={55000}
+        startImmediately={false}
+        timeToUpdate={10}
+        onStop={value => {
+          console.log(value);
+        }}
+      >
+        {({ start, stop, reset, getTime }) => (
+          <>
+            <Title>{formatCubeTime(getTime())}</Title>
+            <Button onClick={() => {
+              if (running) {
+                setRunning(false)
+                setButtonName("Start")
+                stop()
+                props.onTimerDone(getTime())
+              } else {
+                reset()
+                setRunning(true)
+                setButtonName("Finish")
+                start()
+              }
+            }
+            }>{buttonName}</Button>
+          </>
+        )}
+      </Timer>
     </>
   );
 }
 
-export default Timer
+export default TimeInput
