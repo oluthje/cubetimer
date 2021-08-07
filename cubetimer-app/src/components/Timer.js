@@ -11,8 +11,7 @@ function Timer(props) {
   var spaceDown = false
   var running = false
   var timerReady = false
-  var waitTime = 500
-
+  var waitTime = 200
   var waitIntervalId
 
   function startTimerWait() {
@@ -31,13 +30,14 @@ function Timer(props) {
 
   const onKeyDown = useCallback((event) => {
     if(event.keyCode === 32 && !spaceDown) {
-      if (running) {
-        handleTimerToggle()
-      } else {
+      if (!running) {
         setTitleType("danger")
         startTimerWait()
       }
       spaceDown = true
+    }
+    if (running) {
+      handleTimerToggle()
     }
   })
 
@@ -54,6 +54,18 @@ function Timer(props) {
     }
   })
 
+  function handleTimerToggle() {
+    const control = timerControl.current
+    if (running) {
+      control.stop()
+      props.onTimerDone(control.getTime())
+    } else {
+      control.reset()
+      control.start()
+    }
+    running = !running
+  }
+
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown, false);
     document.addEventListener("keyup", onKeyUp);
@@ -63,20 +75,6 @@ function Timer(props) {
       document.addEventListener("keyup", onKeyUp);
     };
   }, [])
-
-  function handleTimerToggle() {
-    const control = timerControl.current
-    if (running) {
-      control.stop()
-      props.onTimerDone(control.getTime())
-      setButtonName("Start")
-    } else {
-      control.reset()
-      control.start()
-      setButtonName("Finish")
-    }
-    running = !running
-  }
 
   return (
     <>
