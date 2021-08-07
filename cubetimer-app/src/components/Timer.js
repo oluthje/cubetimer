@@ -6,16 +6,36 @@ import { formatCubeTime } from "../helper/functions.js";
 const { Title } = Typography
 
 function Timer(props) {
-  const [buttonName, setButtonName] = useState("Start")
+  const [titleType, setTitleType] = useState("default")
   const timerControl = useRef()
   var spaceDown = false
   var running = false
-  var timerReady = true
+  var timerReady = false
+  var waitTime = 500
+
+  var waitIntervalId
+
+  function startTimerWait() {
+    waitIntervalId = setInterval(onTimerWaitCompleted, waitTime)
+  }
+
+  function cancelTimerWait() {
+    clearInterval(waitIntervalId)
+  }
+
+  function onTimerWaitCompleted() {
+    setTitleType("success")
+    clearInterval(waitIntervalId)
+    timerReady = true
+  }
 
   const onKeyDown = useCallback((event) => {
     if(event.keyCode === 32 && !spaceDown) {
       if (running) {
         handleTimerToggle()
+      } else {
+        setTitleType("danger")
+        startTimerWait()
       }
       spaceDown = true
     }
@@ -25,9 +45,12 @@ function Timer(props) {
     if(event.keyCode === 32 && spaceDown) {
       if (!running && timerReady) {
         handleTimerToggle()
+      } else if (!timerReady) {
+        cancelTimerWait()
       }
-      timerReady = !timerReady
+      timerReady = false
       spaceDown = false
+      setTitleType("default")
     }
   })
 
@@ -67,7 +90,7 @@ function Timer(props) {
           timerControl.current = control
           return (
             <React.Fragment>
-              <Title>{formatCubeTime(control.getTime())}</Title>
+              <Title type={titleType}>{formatCubeTime(control.getTime())}</Title>
             </React.Fragment>
           )
         }}
