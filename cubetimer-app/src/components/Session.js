@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Row, Col } from 'antd';
 import Timer from "../components/Timer";
 import TimeInput from "../components/TimeInput";
@@ -10,6 +10,8 @@ function Session(props) {
   const [sessions, setSessions] = useState()
   const [session, setSession] = useState()
   const [times, setTimes] = useState([])
+  const sessionRef = useRef()
+  sessionRef.current = session
 
   useEffect(() => {
     getSessions()
@@ -37,41 +39,38 @@ function Session(props) {
   }
 
   const getSessionTimes = () => {
-    var id = 9
     if (session) {
-      id = session.id
+      axios.get(`/api/v1/sessions/${session.id}`)
+      .then(response => {
+        setTimes(response.data);
+      })
+      .catch(error => console.log(error))
     }
-
-    axios.get(`/api/v1/sessions/${id}`)
-    .then(response => {
-      setTimes(response.data);
-    })
-    .catch(error => console.log(error))
   }
 
   const addCubetime = (seconds) => {
-    axios.post(`/api/v1/sessions/${session.id}/cubetimes`, {cubetime: {seconds: seconds}})
+    axios.post(`/api/v1/sessions/${sessionRef.current.id}/cubetimes`, {cubetime: {seconds: seconds}})
     .then(response => {
       setTimes(times => [...times, response.data])
     })
     .catch(error => console.log(error))
   }
 
-  //<TimeInput addCubetime={addCubetime}/>
-
   return (
     <>
       <Row>
-        <Col offset={8} span={8}>
-          <Timer onTimerDone={addCubetime}/>
-        </Col>
         <Col offset={20} span={2}>
           <SessionsDropdown session={session} sessions={sessions} onDropdownClick={handleDropdownClick}/>
         </Col>
       </Row>
+      <Row>
+        <Col offset={11}>
+          <Timer onTimerDone={addCubetime}/>
+        </Col>
+      </Row>
       <br/>
       <Row>
-        <Col offset={1} span={22}>
+        <Col offset={2} span={20}>
           <TimesTable times={times}/>
         </Col>
       </Row>

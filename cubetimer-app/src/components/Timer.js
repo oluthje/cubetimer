@@ -1,43 +1,79 @@
-import React, { useState } from "react";
-import { Typography, Button } from 'antd';
-import Timer from 'react-compound-timer'
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Typography } from 'antd';
+import CompoundTimer from 'react-compound-timer'
 import { formatCubeTime } from "../helper/functions.js";
 
 const { Title } = Typography
 
-function TimeInput(props) {
+function Timer(props) {
   const [buttonName, setButtonName] = useState("Start")
-  const [running, setRunning] = useState(false)
+  const timerControl = useRef()
+  var spaceDown = false
+  var running = false
+  var timerReady = true
+
+  const onKeyDown = useCallback((event) => {
+    if(event.keyCode === 32 && !spaceDown) {
+      if (running) {
+        handleTimerToggle()
+      }
+      spaceDown = true
+    }
+  })
+
+  const onKeyUp = useCallback((event) => {
+    if(event.keyCode === 32 && spaceDown) {
+      if (!running && timerReady) {
+        handleTimerToggle()
+      }
+      timerReady = !timerReady
+      spaceDown = false
+    }
+  })
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown, false);
+    document.addEventListener("keyup", onKeyUp);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown, false);
+      document.addEventListener("keyup", onKeyUp);
+    };
+  }, [])
+
+  function handleTimerToggle() {
+    const control = timerControl.current
+    if (running) {
+      control.stop()
+      props.onTimerDone(control.getTime())
+      setButtonName("Start")
+    } else {
+      control.reset()
+      control.start()
+      setButtonName("Finish")
+    }
+    running = !running
+  }
 
   return (
     <>
-      <Timer
+      <CompoundTimer
         initialTime={0}
         startImmediately={false}
         timeToUpdate={10}
+        id={"compound-timer"}
       >
-        {({ start, stop, reset, getTime }) => (
-          <>
-            <Title>{formatCubeTime(getTime())}</Title>
-            <Button onClick={() => {
-              if (running) {
-                setRunning(false)
-                setButtonName("Start")
-                stop()
-                props.onTimerDone(getTime())
-              } else {
-                reset()
-                setRunning(true)
-                setButtonName("Finish")
-                start()
-              }
-            }
-            }>{buttonName}</Button>
-          </>
-        )}
-      </Timer>
+        {(control) => {
+          timerControl.current = control
+          return (
+            <React.Fragment>
+              <Title>{formatCubeTime(control.getTime())}</Title>
+            </React.Fragment>
+          )
+        }}
+      </CompoundTimer>
     </>
   );
 }
 
-export default TimeInput
+export default Timer
