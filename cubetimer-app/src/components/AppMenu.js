@@ -29,7 +29,9 @@ const AppMenu = (props) => {
           onClick={handleClick}
         >
           <Menu.Item key="1" icon={<FieldTimeOutlined />}>
-            Timer
+            <a href="/timer/" rel="noopener noreferrer">
+              Timer
+            </a>
           </Menu.Item>
           <Menu.Item key="2" icon={<MenuOutlined />}>
             <a href="/sessions/" rel="noopener noreferrer">

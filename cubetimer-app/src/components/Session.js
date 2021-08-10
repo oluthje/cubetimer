@@ -1,55 +1,113 @@
-import React, { useState, useEffect } from "react";
-import { Table } from 'antd';
+import React, { useState, useEffect, useRef } from "react";
+import { Row, Col } from 'antd';
 import Timer from "../components/Timer";
+import TimeInput from "../components/TimeInput";
+import TimesTable from "../components/TimesTable";
+import SessionsDropdown from "../components/SessionsDropdown";
+import StatsPreview from "../components/StatsPreview";
 import axios from 'axios'
 
 function Session(props) {
+  const [sessions, setSessions] = useState()
+  const [session, setSession] = useState()
   const [times, setTimes] = useState([])
-  const { Column } = Table;
-  var url = props.match.url.split("/")
-  const id = url[url.length - 1]
+  const [showComps, setShowComps] = useState(true)
+  const sessionRef = useRef()
+  sessionRef.current = session
 
   useEffect(() => {
-    getSession()
+    getSessions()
   }, [])
 
-  const getSession = () => {
-    axios.get(`/api/v1/sessions/${id}`)
+  useEffect(() => {
+    getSessionTimes()
+  }, [session])
+
+  const handleDropdownClick = e => {
+    setSession(sessions[e.key])
+  }
+
+  const getSessions = () => {
+    axios.get('/api/v1/sessions')
     .then(response => {
-      setTimes(response.data);
+      if (response.data !== undefined) {
+        setSessions(response.data)
+        if (response.data[0]) {
+          setSession(response.data[0])
+        }
+      }
     })
     .catch(error => console.log(error))
   }
 
-  const addCubetime = (seconds) => {
-    axios.post(`/api/v1/sessions/${id}/cubetimes`, {cubetime: {seconds: seconds}})
+  const getSessionTimes = () => {
+    if (session) {
+      axios.get(`/api/v1/sessions/${session.id}`)
+      .then(response => {
+        setTimes(response.data);
+      })
+      .catch(error => console.log(error))
+    }
+  }
+
+  const addCubetime = (ms) => {
+    axios.post(`/api/v1/sessions/${sessionRef.current.id}/cubetimes`, {cubetime: {seconds: ms}})
     .then(response => {
       setTimes(times => [...times, response.data])
     })
     .catch(error => console.log(error))
   }
 
-  const data = [];
+  const handleTimerDone = (ms) => {
+    addCubetime(ms)
+    setShowComps(true)
+  }
 
-  for (let i = 0; i < times.length; i++) {
-    const dict = {
-      key: i + 1,
-      id: times[i].id,
-      seconds: times[i].seconds
-    }
-    data.push(dict)
+  const handleTimerStart = () => {
+    setShowComps(false)
   }
 
   return (
     <>
-      <Timer addCubetime={addCubetime}/>
+      <Row>
+        <Col offset={20} span={2}>
+          {showComps ?
+            <SessionsDropdown
+              session={session}
+              sessions={sessions}
+              onDropdownClick={handleDropdownClick}
+            /> : null }
+        </Col>
+      </Row>
+      {showComps ? null : <br/>}
       <br/>
-      <Table dataSource={data}>
-        <Column title="#" dataIndex="key" key="key" />
-        <Column title="Seconds" dataIndex="seconds" key="seconds" />
-      </Table>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <Row justify="center">
+        <Col>
+          <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
+        </Col>
+      </Row>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <Row>
+        <Col offset={1} span={10}>
+          {showComps ? <TimesTable times={times}/> : null}
+        </Col>
+        <Col offset={2} span={10}>
+          {showComps ? <StatsPreview times={times}/> : null}
+        </Col>
+      </Row>
     </>
-  );
+  )
 }
 
-export default Session;
+export default Session
