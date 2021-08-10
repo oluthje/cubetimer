@@ -62,6 +62,7 @@ function Timer(props) {
     } else {
       control.reset()
       control.start()
+      props.onTimerStart()
     }
     running = !running
   }

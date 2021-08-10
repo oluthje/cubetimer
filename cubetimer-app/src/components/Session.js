@@ -11,6 +11,7 @@ function Session(props) {
   const [sessions, setSessions] = useState()
   const [session, setSession] = useState()
   const [times, setTimes] = useState([])
+  const [showComps, setShowComps] = useState(true)
   const sessionRef = useRef()
   sessionRef.current = session
 
@@ -49,38 +50,64 @@ function Session(props) {
     }
   }
 
-  const addCubetime = (seconds) => {
-    axios.post(`/api/v1/sessions/${sessionRef.current.id}/cubetimes`, {cubetime: {seconds: seconds}})
+  const addCubetime = (ms) => {
+    axios.post(`/api/v1/sessions/${sessionRef.current.id}/cubetimes`, {cubetime: {seconds: ms}})
     .then(response => {
       setTimes(times => [...times, response.data])
     })
     .catch(error => console.log(error))
   }
 
+  const handleTimerDone = (ms) => {
+    addCubetime(ms)
+    setShowComps(true)
+  }
+
+  const handleTimerStart = () => {
+    setShowComps(false)
+  }
+
   return (
     <>
       <Row>
         <Col offset={20} span={2}>
-          <SessionsDropdown session={session} sessions={sessions} onDropdownClick={handleDropdownClick}/>
+          {showComps ?
+            <SessionsDropdown
+              session={session}
+              sessions={sessions}
+              onDropdownClick={handleDropdownClick}
+            /> : null }
         </Col>
       </Row>
+      {showComps ? null : <br/>}
+      {showComps ? null : <br/>}
+      {showComps ? null : <br/>}
+      {showComps ? null : <br/>}
+      {showComps ? null : <br/>}
+      <br/>
+      <br/>
+      <br/>
       <br/>
       <br/>
       <Row justify="center">
         <Col>
-          <Timer onTimerDone={addCubetime}/>
+          <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
         </Col>
       </Row>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
       <br/>
       <br/>
       <br/>
       <br/>
       <Row>
         <Col offset={1} span={10}>
-          <TimesTable times={times}/>
+          {showComps ? <TimesTable times={times}/> : null}
         </Col>
         <Col offset={2} span={10}>
-          <StatsPreview times={times}/>
+          {showComps ? <StatsPreview times={times}/> : null}
         </Col>
       </Row>
     </>
