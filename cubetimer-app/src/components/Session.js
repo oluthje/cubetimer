@@ -80,10 +80,6 @@ function Session(props) {
         </Col>
       </Row>
       {showComps ? null : <br/>}
-      {showComps ? null : <br/>}
-      {showComps ? null : <br/>}
-      {showComps ? null : <br/>}
-      {showComps ? null : <br/>}
       <br/>
       <br/>
       <br/>
