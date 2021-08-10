@@ -4,6 +4,7 @@ import Timer from "../components/Timer";
 import TimeInput from "../components/TimeInput";
 import TimesTable from "../components/TimesTable";
 import SessionsDropdown from "../components/SessionsDropdown";
+import StatsPreview from "../components/StatsPreview";
 import axios from 'axios'
 
 function Session(props) {
@@ -63,15 +64,23 @@ function Session(props) {
           <SessionsDropdown session={session} sessions={sessions} onDropdownClick={handleDropdownClick}/>
         </Col>
       </Row>
-      <Row>
-        <Col offset={11}>
+      <br/>
+      <br/>
+      <Row justify="center">
+        <Col>
           <Timer onTimerDone={addCubetime}/>
         </Col>
       </Row>
       <br/>
+      <br/>
+      <br/>
+      <br/>
       <Row>
-        <Col offset={2} span={20}>
+        <Col offset={1} span={10}>
           <TimesTable times={times}/>
+        </Col>
+        <Col offset={2} span={10}>
+          <StatsPreview times={times}/>
         </Col>
       </Row>
     </>

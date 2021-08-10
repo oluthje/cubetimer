@@ -10,3 +10,26 @@ export const formatCubeTime = (ms) => {
   }
   return `${getMinutes} : ${getSeconds} . ${centiSeconds}`
 }
+
+export function getAvgOf(num, times) {
+  if (Object.keys(times).length < num || num == 0) {
+    return null
+  }
+  var avg = 0
+  var index = 0
+
+  // Iterate backwards over times
+  for (let key = times.length - 1; key >= 0; key--) {
+    const ms = times[key].seconds
+    if (index == num) {
+      break
+    }
+    avg += ms
+    index += 1
+  }
+  return Math.floor(avg / index)
+}
+
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
