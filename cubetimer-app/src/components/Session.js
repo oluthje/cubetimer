@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Row, Col } from 'antd';
+import { getSessionTimesById } from "../helper/functions.js"
 import Timer from "../components/Timer";
 import TimeInput from "../components/TimeInput";
 import TimesTable from "../components/TimesTable";
@@ -20,7 +21,12 @@ function Session(props) {
   }, [])
 
   useEffect(() => {
-    getSessionTimes()
+    if (session) {
+      getSessionTimesById(session.id)
+        .then(times => {
+          setTimes(times)
+        })
+    }
   }, [session])
 
   const handleDropdownClick = e => {
@@ -38,16 +44,6 @@ function Session(props) {
       }
     })
     .catch(error => console.log(error))
-  }
-
-  const getSessionTimes = () => {
-    if (session) {
-      axios.get(`/api/v1/sessions/${session.id}`)
-      .then(response => {
-        setTimes(response.data);
-      })
-      .catch(error => console.log(error))
-    }
   }
 
   const addCubetime = (ms) => {

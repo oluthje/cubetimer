@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const formatCubeTime = (ms) => {
   const centiSeconds = `${Math.floor(ms % 1000)}0`.slice(0, 2)
   const seconds = `${Math.floor(ms / 1000)}`
@@ -32,4 +34,12 @@ export function getAvgOf(num, times) {
 
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function getSessionTimesById(id) {
+  return axios.get(`/api/v1/sessions/${id}`)
+    .then(response => {
+      return response.data
+    })
+    .catch(error => console.log(error))
 }

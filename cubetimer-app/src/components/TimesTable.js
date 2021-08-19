@@ -15,7 +15,7 @@ function TimesTable(props) {
     }
     data.push(dict)
   }
-
+  //scroll={{ y: 250 }}
 	return (
 		<>
       <Table dataSource={data}>
