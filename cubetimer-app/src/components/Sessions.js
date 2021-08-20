@@ -79,7 +79,7 @@ function Sessions(props) {
           <StatsPreview times={times}/>
         </Col>
         <Col offset={1} span={6}>
-          <TimesTable times={times}/>
+          <TimesTable times={times} delete={false}/>
         </Col>
       </Row>
     </>

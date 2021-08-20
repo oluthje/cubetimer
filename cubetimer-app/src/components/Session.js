@@ -63,6 +63,16 @@ function Session(props) {
     setShowComps(false)
   }
 
+  const handleCubetimeDelete = (record) => {
+    axios.delete(`/api/v1/sessions/${sessionRef.current.id}/cubetimes/${record.id}`)
+    .then(response => {
+      if (response) {
+        setTimes(times.filter(time => time.id !== record.id))
+      }
+    })
+    .catch(error => console.log(error))
+  }
+
   return (
     <>
       <Row>
@@ -96,7 +106,7 @@ function Session(props) {
       <br/>
       <Row>
         <Col offset={1} span={10}>
-          {showComps ? <TimesTable times={times}/> : null}
+          {showComps ? <TimesTable times={times} delete={true} onCubetimeDelete={handleCubetimeDelete}/> : null}
         </Col>
         <Col offset={2} span={10}>
           {showComps ? <StatsPreview times={times}/> : null}
