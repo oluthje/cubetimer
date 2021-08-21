@@ -72,7 +72,7 @@ function Sessions(props) {
       <Title>Sessions</Title>
       <Row>
         <Col offset={0} span={6}>
-          <SessionsMenu onSessionClick={handleSessionClick}/>
+          <SessionsMenu onSessionClick={handleSessionClick} sessions={sessions}/>
           <NewSession createSession={onCreateSession}/>
         </Col>
         <Col offset={1} span={10}>
