@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { List, Divider, Button, Card, Row, Col, Typography, Space } from 'antd'
 import { getSessionTimesById } from "../helper/functions.js"
-import axios from 'axios'
 import SessionsMenu from "../components/SessionsMenu"
 import StatsPreview from "../components/StatsPreview"
 import TimesTable from "../components/TimesTable"
+import ConfirmModal from "../components/ConfirmModal"
+import axios from 'axios'
 
 const { Title } = Typography
 
@@ -12,6 +13,7 @@ function Sessions(props) {
   const [sessions, setSessions] = useState([])
   const [session, setSession] = useState()
   const [times, setTimes] = useState([])
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
 
   useEffect(() => {
     getSessions()
@@ -51,22 +53,36 @@ function Sessions(props) {
     .catch(error => console.log(error))
   }
 
-  const btn_style = {
-    width: "100%",
-    textAlign: "left"
+  const handleSessionDelete = () => {
+    axios.delete(`/api/v1/sessions/${session.id}`)
+    .then(response => {
+      if (response) {
+        setSessions(sessions.filter(someSession => someSession.id !== session.id))
+      }
+    })
+    .catch(error => console.log(error))
   }
 
-  var sessionBtns = []
-  for (var key in sessions) {
-    const session = sessions[key]
-    sessionBtns.push(
-      <Button style={btn_style} key={session.id} href={`/sessions/${session.id}`} type="primary">{session.name}</Button>
-    )
+  const handleModalConfirm = () => {
+    setShowConfirmModal(false)
+    handleSessionDelete()
   }
 
   return (
     <>
-      <Title>Sessions</Title>
+      <ConfirmModal
+        visible={showConfirmModal}
+        title={"Delete " + (session ? session.name : "null") + "?"}
+        description="Are you sure?"
+        onConfirm={handleModalConfirm}
+        handleCancel={() => setShowConfirmModal(false)}
+      />
+      <Row>
+        <Title>Sessions</Title>
+        <Col align="right">
+          <Button onClick={() => setShowConfirmModal(true)} type="primary" danger>Delete Session</Button>
+        </Col>
+      </Row>
       <Row>
         <Col offset={0} span={6}>
           <SessionsMenu
