@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Row, Col } from 'antd';
+import React, { useState, useEffect, useRef } from "react"
+import { Row, Col } from 'antd'
 import { getSessionTimesById } from "../helper/functions.js"
-import Timer from "../components/Timer";
-import TimeInput from "../components/TimeInput";
-import TimesTable from "../components/TimesTable";
-import SessionsDropdown from "../components/SessionsDropdown";
-import StatsPreview from "../components/StatsPreview";
+import Timer from "../components/Timer"
+import TimeInput from "../components/TimeInput"
+import TimesTable from "../components/TimesTable"
+import SessionsDropdown from "../components/SessionsDropdown"
+import StatsPreview from "../components/StatsPreview"
 import axios from 'axios'
 
 function Session(props) {

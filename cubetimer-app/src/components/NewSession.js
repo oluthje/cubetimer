@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { Modal, Button, Form, Input } from 'antd';
+import React, { useState } from 'react'
+import { Modal, Button, Form, Input } from 'antd'
 import axios from 'axios'
 
 const NewSession = (props) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [form] = Form.useForm()
 
   const showModal = () => {
-    setIsModalVisible(true);
-  };
+    setIsModalVisible(true)
+  }
 
   const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+    setIsModalVisible(false)
+  }
 
   const onFinish = () => {
-  	const name = form.getFieldValue('name');
+  	const name = form.getFieldValue('name')
   	if (name) {
-	  	setIsModalVisible(false);
-	    props.createSession(form.getFieldValue('name'));
+	  	setIsModalVisible(false)
+	    props.createSession(form.getFieldValue('name'))
   	}
-  };
+  }
 
   const newSessionForm = (
     <Form
@@ -39,7 +39,7 @@ const NewSession = (props) => {
         <Input />
       </Form.Item>
      </Form>
-  );
+  )
 
   return (
     <>
@@ -50,7 +50,7 @@ const NewSession = (props) => {
       	{newSessionForm}
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default NewSession;
+export default NewSession

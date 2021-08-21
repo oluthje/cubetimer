@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react"
 import { List, Divider, Button, Card, Row, Col, Typography, Space } from 'antd'
 import { getSessionTimesById } from "../helper/functions.js"
 import axios from 'axios'
-import NewSession from "../components/NewSession"
-import SessionsMenu from "../components/SessionsMenu";
-import StatsPreview from "../components/StatsPreview";
-import TimesTable from "../components/TimesTable";
+import SessionsMenu from "../components/SessionsMenu"
+import StatsPreview from "../components/StatsPreview"
+import TimesTable from "../components/TimesTable"
 
 const { Title } = Typography
 
@@ -23,7 +22,6 @@ function Sessions(props) {
       getSessionTimesById(session.id)
         .then(times => {
           setTimes(times)
-          console.log(times)
         })
     }
   }, [session])
@@ -36,7 +34,6 @@ function Sessions(props) {
     axios.get('/api/v1/sessions')
     .then(response => {
       if (response.data !== undefined) {
-        console.log(response.data)
         setSessions(response.data)
         if (response.data[0]) {
           setSession(response.data[0])
@@ -72,8 +69,11 @@ function Sessions(props) {
       <Title>Sessions</Title>
       <Row>
         <Col offset={0} span={6}>
-          <SessionsMenu onSessionClick={handleSessionClick} sessions={sessions}/>
-          <NewSession createSession={onCreateSession}/>
+          <SessionsMenu
+            createSession={onCreateSession}
+            onSessionClick={handleSessionClick}
+            sessions={sessions}
+          />
         </Col>
         <Col offset={1} span={10}>
           <StatsPreview times={times}/>

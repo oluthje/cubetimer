@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Menu, Card, Button } from 'antd';
+import NewSession from "../components/NewSession"
 
 function SessionsMenu(props) {
   const [sessionKey, setSessionKey] = useState("0")
@@ -16,6 +17,9 @@ function SessionsMenu(props) {
       </Menu.Item>
     )
   }
+  sessionMenuItems.push(
+    <NewSession createSession={props.createSession}/>
+  )
 
   const handleClick = e => {
     setSessionKey(e.key)
