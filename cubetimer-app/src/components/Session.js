@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react"
-import { Row, Col } from 'antd'
+import { Row, Col, Space } from 'antd'
 import { getSessionTimesById } from "../helper/functions.js"
 import Timer from "../components/Timer"
 import TimeInput from "../components/TimeInput"
 import TimesTable from "../components/TimesTable"
 import SessionsDropdown from "../components/SessionsDropdown"
 import StatsPreview from "../components/StatsPreview"
+import CubetimesGraph from "../components/CubetimesGraph"
 import axios from 'axios'
 
 function Session(props) {
@@ -90,7 +91,6 @@ function Session(props) {
       <br/>
       <br/>
       <br/>
-      <br/>
       <Row justify="center">
         <Col>
           <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
@@ -100,16 +100,13 @@ function Session(props) {
       <br/>
       <br/>
       <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
       <Row>
-        <Col offset={1} span={10}>
+        <Col offset={1} span={7}>
           {showComps ? <TimesTable times={times} delete={true} onCubetimeDelete={handleCubetimeDelete}/> : null}
         </Col>
-        <Col offset={2} span={10}>
+        <Col offset={1} span={14}>
           {showComps ? <StatsPreview times={times}/> : null}
+          {showComps ? <CubetimesGraph times={times}/> : null}
         </Col>
       </Row>
     </>
