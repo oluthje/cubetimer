@@ -76,39 +76,42 @@ function Session(props) {
 
   return (
     <>
-      <Row>
-        <Col offset={20} span={2}>
-          {showComps ?
-            <SessionsDropdown
-              session={session}
-              sessions={sessions}
-              onDropdownClick={handleDropdownClick}
-            /> : null }
-        </Col>
-      </Row>
-      {showComps ? null : <br/>}
+      {showComps ?
+        <Row>
+          <Col offset={20} span={2}>
+              <SessionsDropdown
+                session={session}
+                sessions={sessions}
+                onDropdownClick={handleDropdownClick}
+              />
+          </Col>
+        </Row>
+      : null }
+
+      <br/>
+
+      <Space style={{width: '100%', justifyContent: 'center'}}>
+        <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
+      </Space>
+
       <br/>
       <br/>
       <br/>
       <br/>
-      <Row justify="center">
-        <Col>
-          <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
-        </Col>
-      </Row>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <Row>
-        <Col offset={1} span={7}>
-          {showComps ? <TimesTable times={times} delete={true} onCubetimeDelete={handleCubetimeDelete}/> : null}
-        </Col>
-        <Col offset={1} span={14}>
-          {showComps ? <StatsPreview times={times}/> : null}
-          {showComps ? <CubetimesGraph times={times}/> : null}
-        </Col>
-      </Row>
+
+      {showComps ?
+        <Row>
+          <Col offset={1} span={7}>
+            <TimesTable times={times} delete={true} onCubetimeDelete={handleCubetimeDelete}/>
+          </Col>
+          <Col offset={1} span={14}>
+            <Space size={32} direction="vertical">
+              <StatsPreview times={times}/>
+              <CubetimesGraph times={times}/>
+            </Space>
+          </Col>
+        </Row>
+      : null}
     </>
   )
 }
