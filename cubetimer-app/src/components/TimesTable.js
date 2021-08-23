@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button } from 'antd';
+import { Table, Button, Card } from 'antd';
 import { formatCubeTime } from "../helper/functions.js";
 
 function TimesTable(props) {
@@ -15,19 +15,21 @@ function TimesTable(props) {
     }
     data.push(dict)
   }
-  //scroll={{ y: 250 }}
+
 	return (
 		<>
-      <Table dataSource={data}>
-        <Column title="#" dataIndex="key" key="key" />
-        <Column title="Time" dataIndex="time" key="time" />
-        {props.delete ? <Column
-          title="Delete"
-          render={(text, record) => (
-            <a onClick={() => props.onCubetimeDelete(record)}>Delete</a>
-          )}
-        /> : null}
-      </Table>
+      <Card>
+        <Table dataSource={data} scroll={{ y: 475 }} pagination={false}>
+          <Column title="#" dataIndex="key" key="key" />
+          <Column title="Time" dataIndex="time" key="time" />
+          {props.delete ? <Column
+            title="Delete"
+            render={(text, record) => (
+              <a onClick={() => props.onCubetimeDelete(record)}>Delete</a>
+            )}
+          /> : null}
+        </Table>
+      </Card>
      </>
 	)
 }
