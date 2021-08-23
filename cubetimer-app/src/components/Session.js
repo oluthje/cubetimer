@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Row, Col } from 'antd';
+import React, { useState, useEffect, useRef } from "react"
+import { Row, Col, Space } from 'antd'
 import { getSessionTimesById } from "../helper/functions.js"
-import Timer from "../components/Timer";
-import TimeInput from "../components/TimeInput";
-import TimesTable from "../components/TimesTable";
-import SessionsDropdown from "../components/SessionsDropdown";
-import StatsPreview from "../components/StatsPreview";
+import Timer from "../components/Timer"
+import TimeInput from "../components/TimeInput"
+import TimesTable from "../components/TimesTable"
+import SessionsDropdown from "../components/SessionsDropdown"
+import StatsPreview from "../components/StatsPreview"
+import CubetimesGraph from "../components/CubetimesGraph"
 import axios from 'axios'
 
 function Session(props) {
@@ -75,43 +76,42 @@ function Session(props) {
 
   return (
     <>
-      <Row>
-        <Col offset={20} span={2}>
-          {showComps ?
-            <SessionsDropdown
-              session={session}
-              sessions={sessions}
-              onDropdownClick={handleDropdownClick}
-            /> : null }
-        </Col>
-      </Row>
-      {showComps ? null : <br/>}
+      {showComps ?
+        <Row>
+          <Col offset={20} span={2}>
+              <SessionsDropdown
+                session={session}
+                sessions={sessions}
+                onDropdownClick={handleDropdownClick}
+              />
+          </Col>
+        </Row>
+      : null }
+
+      <br/>
+
+      <Space style={{width: '100%', justifyContent: 'center'}}>
+        <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
+      </Space>
+
       <br/>
       <br/>
       <br/>
       <br/>
-      <br/>
-      <Row justify="center">
-        <Col>
-          <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
-        </Col>
-      </Row>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <Row>
-        <Col offset={1} span={10}>
-          {showComps ? <TimesTable times={times} delete={true} onCubetimeDelete={handleCubetimeDelete}/> : null}
-        </Col>
-        <Col offset={2} span={10}>
-          {showComps ? <StatsPreview times={times}/> : null}
-        </Col>
-      </Row>
+
+      {showComps ?
+        <Row>
+          <Col offset={1} span={7}>
+            <TimesTable times={times} delete={true} onCubetimeDelete={handleCubetimeDelete}/>
+          </Col>
+          <Col offset={1} span={14}>
+            <Space size={32} direction="vertical">
+              <StatsPreview times={times}/>
+              <CubetimesGraph times={times}/>
+            </Space>
+          </Col>
+        </Row>
+      : null}
     </>
   )
 }

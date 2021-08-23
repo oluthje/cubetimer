@@ -20,7 +20,6 @@ class SessionsController < ApplicationController
   def destroy
     session = Session.find(params[:id])
     session.destroy
-    head :no_content, status: :ok
   end
 
   private
