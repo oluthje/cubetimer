@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Row, Col, Space } from 'antd'
 import { getSessionTimesById } from "../helper/functions.js"
+import { makeScramble } from "../helper/scrambles.js"
 import Timer from "../components/Timer"
 import TimeInput from "../components/TimeInput"
 import TimesTable from "../components/TimesTable"
 import SessionsDropdown from "../components/SessionsDropdown"
 import StatsPreview from "../components/StatsPreview"
 import CubetimesGraph from "../components/CubetimesGraph"
+import Scrambler from "../components/Scrambler"
 import axios from 'axios'
 
 function Session(props) {
@@ -14,8 +16,12 @@ function Session(props) {
   const [session, setSession] = useState()
   const [times, setTimes] = useState([])
   const [showComps, setShowComps] = useState(true)
+  const [scramble, setScramble] = useState(makeScramble())
+  const [scrambleLocked, setScrambleLocked] = useState(false)
   const sessionRef = useRef()
   sessionRef.current = session
+  const lockedRef = useRef()
+  lockedRef.current = scrambleLocked
 
   useEffect(() => {
     getSessions()
@@ -58,6 +64,7 @@ function Session(props) {
   const handleTimerDone = (ms) => {
     addCubetime(ms)
     setShowComps(true)
+    handleScrambleReload()
   }
 
   const handleTimerStart = () => {
@@ -74,6 +81,14 @@ function Session(props) {
     .catch(error => console.log(error))
   }
 
+  const handleScrambleReload = () => {
+    if (!lockedRef.current) {
+      setScramble(makeScramble())
+    }
+  }
+
+  const toggleLocked = () => setScrambleLocked(scrambleLocked => !scrambleLocked)
+
   return (
     <>
       {showComps ?
@@ -88,12 +103,13 @@ function Session(props) {
         </Row>
       : null }
 
+      <Scrambler onScrambleReload={handleScrambleReload} scramble={scramble} onLockToggle={toggleLocked} locked={scrambleLocked}/>
       <br/>
 
+      <br/>
       <Space style={{width: '100%', justifyContent: 'center'}}>
         <Timer onTimerDone={handleTimerDone} onTimerStart={handleTimerStart}/>
       </Space>
-
       <br/>
       <br/>
       <br/>

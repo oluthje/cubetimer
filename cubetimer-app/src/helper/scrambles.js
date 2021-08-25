@@ -20,7 +20,7 @@ export function makeScramble() {
       }
     }
   }
-  console.log(scramble)
+
   // switch numbers to letters
   var move
   for (var i = 0; i < 20; i++) {
@@ -51,7 +51,7 @@ export function makeScramble() {
         break
     }
   }
-  console.log(scrambleMoves)
+  return scrambleToString(scrambleMoves)
 }
 
 function getRandomInt(max) {
@@ -60,4 +60,12 @@ function getRandomInt(max) {
 
 function getRandomIntBetween(min, max) { // return a number from min to max - 1. Ex. 3, 9 returns 3 - 8
   return Math.floor(Math.random() * (max - min) + min)
+}
+
+function scrambleToString(scrambleMoves) {
+  var string = ""
+  for (var index in scrambleMoves) {
+    string += scrambleMoves[index] + " "
+  }
+  return string
 }
