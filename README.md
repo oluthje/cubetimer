@@ -1,24 +1,28 @@
-# README
+## Cubetimer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Installation
+First install ruby on rails
+```bash
+gem install rails
+```
 
-Things you may want to cover:
+Install react js
+```bash
+npm i react
+```
 
-* Ruby version
+# Usage
+First the rails server needs to be started.
+```bash
+cd cubetimer
+bin/rails server
+```
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Next the React JS app needs to be started.
+The react port is where the web app can be viewed.
+```bash
+cd cubetimer-app
+npm install
+npm start
+```
+The app may need to be reloaded to load properly.
